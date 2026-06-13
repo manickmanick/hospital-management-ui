@@ -1,17 +1,13 @@
 import { Pencil, Trash2 } from "lucide-react";
-type Patient = {
-  id: number;
-  name: string;
-  age: number;
-  phone: string;
-};
+import type { Patient } from "../models";
 
 type Props = {
   patients: Patient[];
   loading: boolean;
+  onDelete: (id: number) => void;
 };
 
-function PatientTable({ patients, loading }: Props) {
+function PatientTable({ patients, loading, onDelete }: Props) {
   if (loading) {
     return (
       <div className="bg-white mt-8 rounded-2xl p-8">Loading patients...</div>
@@ -27,7 +23,7 @@ function PatientTable({ patients, loading }: Props) {
     );
   }
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 mt-8">
+    <div className="table-card">
       <div className="p-5 border-b">
         <input
           type="text"
@@ -36,7 +32,8 @@ function PatientTable({ patients, loading }: Props) {
         />
       </div>
 
-      <table className="w-full">
+      <div className="overflow-x-auto">
+      <table className="w-full min-w-[620px]">
         <thead>
           <tr className="border-b bg-slate-50">
             <th className="text-left p-4">Name</th>
@@ -64,7 +61,10 @@ function PatientTable({ patients, loading }: Props) {
                     <Pencil size={18} />
                   </button>
 
-                  <button className="text-red-600">
+                  <button
+                    className="text-red-600"
+                    onClick={() => onDelete(patient.id)}
+                  >
                     <Trash2 size={18} />
                   </button>
                 </div>
@@ -73,6 +73,7 @@ function PatientTable({ patients, loading }: Props) {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

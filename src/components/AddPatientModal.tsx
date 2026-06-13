@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { createPatient } from "../services/patient.service";
+import { getApiErrorMessage } from "../services/api";
 
 type Props = {
   open: boolean;
@@ -39,7 +40,7 @@ function AddPatientModal({ open, onClose, onSuccess }: Props) {
 
       onClose();
     } catch (error) {
-      toast.error("Failed to create patient");
+      toast.error(getApiErrorMessage(error, "Failed to create patient"));
     } finally {
       setLoading(false);
     }

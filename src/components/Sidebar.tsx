@@ -27,14 +27,14 @@ function Sidebar() {
   ];
 
   return (
-    <aside className="w-72 bg-white border-r border-slate-200">
-      <div className="p-6">
+    <aside className="border-b border-slate-200 bg-white lg:min-h-screen lg:w-72 lg:border-b-0 lg:border-r">
+      <div className="px-5 py-4 lg:p-6">
         <h1 className="text-2xl font-bold text-blue-600">HospitalMS</h1>
 
         <p className="text-sm text-slate-500 mt-1">Management Portal</p>
       </div>
 
-      <nav className="px-4">
+      <nav className="flex gap-2 overflow-x-auto px-4 pb-4 lg:block lg:pb-0">
         {menuItems.map((item) => {
           const Icon = item.icon;
 
@@ -43,7 +43,7 @@ function Sidebar() {
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-xl mb-2 transition-all ${
+                `flex shrink-0 items-center gap-3 rounded-xl px-4 py-3 transition-all lg:mb-2 ${
                   isActive
                     ? "bg-blue-600 text-white"
                     : "text-slate-700 hover:bg-slate-100"

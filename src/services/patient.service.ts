@@ -1,19 +1,21 @@
-import axios from "axios";
+import type { Patient, PatientInput } from "../models";
+import { api } from "./api";
 
-const API_URL = "http://localhost:3000/api/patients";
-
-export const getPatients = async () => {
-  const response = await axios.get(API_URL);
-
+export async function getPatients() {
+  const response = await api.get<Patient[]>("/patients");
   return response.data;
-};
+}
 
-export const createPatient = async (patient: {
-  name: string;
-  age: number;
-  phone: string;
-}) => {
-  const response = await axios.post(API_URL, patient);
-
+export async function createPatient(patient: PatientInput) {
+  const response = await api.post<Patient>("/patients", patient);
   return response.data;
-};
+}
+
+export async function deletePatient(id: number) {
+  await api.delete(`/patients/${id}`);
+}
+
+export async function updatePatient(id: number, patient: PatientInput) {
+  const response = await api.put<Patient>(`/patients/${id}`, patient);
+  return response.data;
+}
