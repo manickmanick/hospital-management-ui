@@ -1,21 +1,31 @@
 import { Pencil, Trash2 } from "lucide-react";
+type Patient = {
+  id: number;
+  name: string;
+  age: number;
+  phone: string;
+};
 
-function PatientTable() {
-  const patients = [
-    {
-      id: 1,
-      name: "John Doe",
-      age: 25,
-      phone: "9876543210",
-    },
-    {
-      id: 2,
-      name: "Sarah",
-      age: 32,
-      phone: "9999999999",
-    },
-  ];
+type Props = {
+  patients: Patient[];
+  loading: boolean;
+};
 
+function PatientTable({ patients, loading }: Props) {
+  if (loading) {
+    return (
+      <div className="bg-white mt-8 rounded-2xl p-8">Loading patients...</div>
+    );
+  }
+  if (patients.length === 0) {
+    return (
+      <div className="bg-white mt-8 rounded-2xl p-10 text-center">
+        <h3 className="text-xl font-semibold">No Patients Found</h3>
+
+        <p className="text-slate-500 mt-2">Add your first patient.</p>
+      </div>
+    );
+  }
   return (
     <div className="bg-white rounded-2xl border border-slate-200 mt-8">
       <div className="p-5 border-b">

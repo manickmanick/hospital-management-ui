@@ -7,6 +7,7 @@ import { createPatient } from "../services/patient.service";
 type Props = {
   open: boolean;
   onClose: () => void;
+  onSuccess: () => void;
 };
 
 type PatientForm = {
@@ -15,7 +16,7 @@ type PatientForm = {
   phone: string;
 };
 
-function AddPatientModal({ open, onClose }: Props) {
+function AddPatientModal({ open, onClose, onSuccess }: Props) {
   const [loading, setLoading] = useState(false);
   const {
     register,
@@ -31,6 +32,8 @@ function AddPatientModal({ open, onClose }: Props) {
       await createPatient(data);
 
       toast.success("Patient created successfully");
+
+      await onSuccess();
 
       reset();
 

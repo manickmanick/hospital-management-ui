@@ -2,10 +2,32 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Header from "../components/Header";
 import PatientTable from "../components/PatientTable";
 import AddPatientModal from "../components/AddPatientModal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getPatients } from "../services/patient.service";
 
 function Patients() {
+    console.log("patient component rendering");
+    
   const [openModal, setOpenModal] = useState(false);
+  const [patients, setPatients] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const loadPatients = async () => {
+    try {
+      setLoading(true);
+      const data = await getPatients();
+
+      setPatients(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadPatients();
+  }, []);
 
   return (
     <DashboardLayout>
@@ -27,8 +49,12 @@ function Patients() {
           </button>
         </div>
 
-        <PatientTable />
-        <AddPatientModal open={openModal} onClose={() => setOpenModal(false)} />
+        <PatientTable patients={patients} loading={loading} />
+        <AddPatientModal
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          onSuccess={loadPatients}
+        />
       </div>
     </DashboardLayout>
   );
