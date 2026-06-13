@@ -11,10 +11,7 @@ export async function getAppointments() {
 }
 
 export async function createAppointment(appointment: AppointmentInput) {
-  const response = await api.post<Appointment>(
-    "/appointments",
-    appointment,
-  );
+  const response = await api.post<Appointment>("/appointments", appointment);
   return response.data;
 }
 
@@ -22,9 +19,10 @@ export async function updateAppointmentStatus(
   id: number,
   status: AppointmentStatus,
 ) {
-  const response = await api.patch<Appointment>(`/appointments/${id}`, {
-    status,
-  });
+  const response = await api.patch<Appointment>(
+    `/appointments/${id}/status`,
+    { status },
+  );
   return response.data;
 }
 

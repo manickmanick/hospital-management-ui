@@ -1,4 +1,4 @@
-import type { Patient, PatientInput } from "../models";
+import type { Patient, PatientHistory, PatientInput } from "../models";
 import { api } from "./api";
 
 export async function getPatients() {
@@ -17,5 +17,10 @@ export async function deletePatient(id: number) {
 
 export async function updatePatient(id: number, patient: PatientInput) {
   const response = await api.put<Patient>(`/patients/${id}`, patient);
+  return response.data;
+}
+
+export async function getPatientHistory(id: number) {
+  const response = await api.get<PatientHistory>(`/patients/${id}/history`);
   return response.data;
 }

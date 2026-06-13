@@ -34,16 +34,16 @@ export default function RecentAppointments({
               {appointments.map((item) => (
                 <tr key={item.id}>
                   <td className="font-semibold text-slate-900">
-                    {item.patient}
+                    {item.patientName}
                   </td>
-                  <td>{item.doctor}</td>
-                  <td>{item.date}</td>
+                  <td>{item.doctorName}</td>
+                  <td>{new Date(item.appointmentDate).toLocaleString()}</td>
                   <td>
                     <span
                       className={`status-badge ${
-                        item.status === "Completed"
+                        item.status === "COMPLETED"
                           ? "bg-green-100 text-green-700"
-                          : item.status === "Cancelled"
+                          : item.status === "CANCELLED"
                             ? "bg-red-100 text-red-700"
                             : "bg-blue-100 text-blue-700"
                       }`}

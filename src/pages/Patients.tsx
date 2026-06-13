@@ -3,13 +3,15 @@ import Header from "../components/Header";
 import PatientTable from "../components/PatientTable";
 import AddPatientModal from "../components/AddPatientModal";
 import { useCallback, useState, useEffect } from "react";
-import { getPatients, deletePatient } from "../services/patient.service";
+// import { getPatients, deletePatient } from "../services/patient.service";
 import toast from "react-hot-toast";
 import DeletePatientModal from "../components/DeletePatientModal";
 import type { Patient } from "../models";
 import { getApiErrorMessage } from "../services/api";
+import { useAuth } from "../auth/auth-context";
 
 function Patients() {
+  const { user } = useAuth();
   const [openModal, setOpenModal] = useState(false);
   const [patients, setPatients] = useState<Patient[]>([]);
   const [loading, setLoading] = useState(true);
@@ -22,9 +24,9 @@ function Patients() {
   const loadPatients = useCallback(async () => {
     try {
       setLoading(true);
-      const data = await getPatients();
+    //   const data = await getPatients();
 
-      setPatients(data);
+    //   setPatients(data);
     } catch (error) {
       toast.error(getApiErrorMessage(error, "Unable to load patients"));
     } finally {
@@ -33,12 +35,12 @@ function Patients() {
   }, []);
 
   useEffect(() => {
-    getPatients()
-      .then(setPatients)
-      .catch((error) => {
-        toast.error(getApiErrorMessage(error, "Unable to load patients"));
-      })
-      .finally(() => setLoading(false));
+    // getPatients()
+    //   .then(setPatients)
+    //   .catch((error) => {
+    //     toast.error(getApiErrorMessage(error, "Unable to load patients"));
+    //   })
+    //   .finally(() => setLoading(false));
   }, []);
 
   const handleDeleteClick = (id: number) => {
@@ -50,7 +52,7 @@ function Patients() {
     if (selectedPatientId === null) return;
 
     try {
-      await deletePatient(selectedPatientId);
+    //   await deletePatient(selectedPatientId);
 
       toast.success("Patient deleted");
 
@@ -74,18 +76,19 @@ function Patients() {
             <p className="text-slate-500 mt-1">Manage hospital patients</p>
           </div>
 
-          <button
-            className="primary-button"
-            onClick={() => setOpenModal(true)}
-          >
-            Add Patient
-          </button>
+          {user?.role !== "LAB" && (
+            <button className="primary-button" onClick={() => setOpenModal(true)}>
+              Add Patient
+            </button>
+          )}
         </div>
 
         <PatientTable
           patients={patients}
           loading={loading}
           onDelete={handleDeleteClick}
+          canDelete={user?.role === "ADMIN"}
+          canViewHistory={user?.role !== "LAB"}
         />
         <AddPatientModal
           open={openModal}

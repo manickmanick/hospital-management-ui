@@ -8,8 +8,10 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import type { Doctor } from "../models";
 import { getApiErrorMessage } from "../services/api";
 import { deleteDoctor, getDoctors } from "../services/doctor.service";
+import { useAuth } from "../auth/auth-context";
 
 export default function Doctors() {
+  const { user } = useAuth();
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
@@ -54,14 +56,17 @@ export default function Doctors() {
           <h1>Doctors</h1>
           <p>Manage doctors and their availability.</p>
         </div>
-        <button className="primary-button" onClick={() => setOpen(true)}>
-          <Plus size={18} /> Add doctor
-        </button>
+        {user?.role === "ADMIN" && (
+          <button className="primary-button" onClick={() => setOpen(true)}>
+            <Plus size={18} /> Add doctor
+          </button>
+        )}
       </div>
       <DoctorTable
         doctors={doctors}
         loading={loading}
         onDelete={handleDelete}
+        canDelete={user?.role === "ADMIN"}
       />
       <AddDoctorModal
         open={open}

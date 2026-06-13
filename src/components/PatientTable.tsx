@@ -1,13 +1,16 @@
-import { Pencil, Trash2 } from "lucide-react";
+import { Eye, Trash2 } from "lucide-react";
 import type { Patient } from "../models";
+import { Link } from "react-router-dom";
 
 type Props = {
   patients: Patient[];
   loading: boolean;
   onDelete: (id: number) => void;
+  canDelete: boolean;
+  canViewHistory: boolean;
 };
 
-function PatientTable({ patients, loading, onDelete }: Props) {
+function PatientTable({ patients, loading, onDelete, canDelete, canViewHistory }: Props) {
   if (loading) {
     return (
       <div className="bg-white mt-8 rounded-2xl p-8">Loading patients...</div>
@@ -57,16 +60,16 @@ function PatientTable({ patients, loading, onDelete }: Props) {
 
               <td className="p-4">
                 <div className="flex gap-3">
-                  <button className="text-blue-600">
-                    <Pencil size={18} />
-                  </button>
-
-                  <button
-                    className="text-red-600"
-                    onClick={() => onDelete(patient.id)}
-                  >
-                    <Trash2 size={18} />
-                  </button>
+                  {canViewHistory && (
+                    <Link className="icon-button text-blue-600" to={`/patients/${patient.id}`}>
+                      <Eye size={18} />
+                    </Link>
+                  )}
+                  {canDelete && (
+                    <button className="icon-button text-red-600" onClick={() => onDelete(patient.id)}>
+                      <Trash2 size={18} />
+                    </button>
+                  )}
                 </div>
               </td>
             </tr>

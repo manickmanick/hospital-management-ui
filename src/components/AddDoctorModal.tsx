@@ -17,7 +17,7 @@ export default function AddDoctorModal({ open, onClose, onSuccess }: Props) {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<DoctorInput>({ defaultValues: { status: "Available" } });
+  } = useForm<DoctorInput>();
 
   if (!open) return null;
 
@@ -37,6 +37,14 @@ export default function AddDoctorModal({ open, onClose, onSuccess }: Props) {
     <div className="modal-backdrop">
       <div className="modal-card">
         <div className="modal-header">
+          <div>
+            <label className="form-label">License number</label>
+            <input
+              className="form-input"
+              {...register("licenseNumber", { required: "License number is required" })}
+            />
+            {errors.licenseNumber && <p className="form-error">{errors.licenseNumber.message}</p>}
+          </div>
           <div>
             <h2 className="text-xl font-bold text-slate-900">Add doctor</h2>
             <p className="mt-1 text-sm text-slate-500">
@@ -86,7 +94,7 @@ export default function AddDoctorModal({ open, onClose, onSuccess }: Props) {
               <input
                 type="email"
                 className="form-input"
-                {...register("email")}
+                {...register("email", { required: "Email is required" })}
               />
             </div>
           </div>

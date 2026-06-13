@@ -12,7 +12,7 @@ const emptySummary: DashboardSummary = {
   patients: 0,
   doctors: 0,
   appointments: 0,
-  revenue: 0,
+  completedAppointments: 0,
   recentAppointments: [],
 };
 
@@ -54,16 +54,8 @@ export default function Dashboard() {
           value={loading ? "..." : summary.appointments.toLocaleString()}
         />
         <StatCard
-          title="Revenue"
-          value={
-            loading
-              ? "..."
-              : new Intl.NumberFormat("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                  maximumFractionDigits: 0,
-                }).format(summary.revenue)
-          }
+          title="Completed"
+          value={loading ? "..." : summary.completedAppointments.toLocaleString()}
         />
       </div>
 

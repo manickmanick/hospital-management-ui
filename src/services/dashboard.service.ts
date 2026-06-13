@@ -1,7 +1,22 @@
 import type { DashboardSummary } from "../models";
-import { api } from "./api";
+import { getAppointments } from "./appointment.service";
+import { getDoctors } from "./doctor.service";
+import { getPatients } from "./patient.service";
 
-export async function getDashboardSummary() {
-  const response = await api.get<DashboardSummary>("/dashboard/summary");
-  return response.data;
+export async function getDashboardSummary(): Promise<DashboardSummary> {
+  const [patients, doctors, appointments] = await Promise.all([
+    getPatients(),
+    getDoctors(),
+    getAppointments().catch(() => []),
+  ]);
+
+  return {
+    patients: patients.length,
+    doctors: doctors.length,
+    appointments: appointments.length,
+    completedAppointments: appointments.filter(
+      (appointment) => appointment.status === "COMPLETED",
+    ).length,
+    recentAppointments: appointments.slice(0, 5),
+  };
 }

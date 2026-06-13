@@ -1,5 +1,5 @@
 import { useMemo, useState, type ReactNode } from "react";
-import type { LoginInput, RegisterInput, User } from "../models";
+import type { LoginInput, User } from "../models";
 import {
   AUTH_TOKEN_KEY,
   AUTH_USER_KEY,
@@ -37,10 +37,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isAuthenticated: Boolean(user),
       login: async (input: LoginInput) => {
         const session = await authService.login(input);
-        saveSession(session.token, session.user);
-      },
-      register: async (input: RegisterInput) => {
-        const session = await authService.register(input);
         saveSession(session.token, session.user);
       },
       logout: () => {

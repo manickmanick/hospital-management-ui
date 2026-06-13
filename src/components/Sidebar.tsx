@@ -1,8 +1,10 @@
-import { LayoutDashboard, Users, UserRound, CalendarDays } from "lucide-react";
+import { CalendarDays, FlaskConical, LayoutDashboard, ShieldCheck, UserRound, Users } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../auth/auth-context";
 
 function Sidebar() {
+  const { user } = useAuth();
   const menuItems = [
     {
       title: "Dashboard",
@@ -23,8 +25,21 @@ function Sidebar() {
       title: "Appointments",
       icon: CalendarDays,
       path: "/appointments",
+      roles: ["ADMIN", "DOCTOR"],
     },
-  ];
+    {
+      title: "Accounts",
+      icon: ShieldCheck,
+      path: "/users",
+      roles: ["ADMIN"],
+    },
+    {
+      title: "Lab reports",
+      icon: FlaskConical,
+      path: "/lab-reports",
+      roles: ["ADMIN", "LAB"],
+    },
+  ].filter((item) => !item.roles || (user && item.roles.includes(user.role)));
 
   return (
     <aside className="border-b border-slate-200 bg-white lg:min-h-screen lg:w-72 lg:border-b-0 lg:border-r">

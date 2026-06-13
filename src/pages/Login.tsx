@@ -1,7 +1,7 @@
 import { Activity, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "../auth/auth-context";
 import AuthLayout from "../layouts/AuthLayout";
@@ -88,8 +88,8 @@ export default function Login() {
                 {...register("password", {
                   required: "Password is required",
                   minLength: {
-                    value: 6,
-                    message: "Password must contain at least 6 characters",
+                    value: 8,
+                    message: "Password must contain at least 8 characters",
                   },
                 })}
               />
@@ -119,10 +119,7 @@ export default function Login() {
         </form>
 
         <p className="mt-7 text-center text-sm text-slate-500">
-          Need an administrator account?{" "}
-          <Link className="font-semibold text-blue-600" to="/register">
-            Create account
-          </Link>
+          Accounts are created by a hospital administrator.
         </p>
       </div>
     </AuthLayout>

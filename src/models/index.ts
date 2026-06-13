@@ -1,10 +1,13 @@
-export type UserRole = "admin" | "doctor" | "receptionist";
+export type UserRole = "ADMIN" | "DOCTOR" | "LAB";
 
 export type User = {
   id: number;
   name: string;
   email: string;
   role: UserRole;
+  doctorId: number | null;
+  isActive?: boolean;
+  createdAt?: string;
 };
 
 export type AuthResponse = {
@@ -17,63 +20,98 @@ export type LoginInput = {
   password: string;
 };
 
-export type RegisterInput = LoginInput & {
-  name: string;
-};
-
 export type Patient = {
   id: number;
   name: string;
-  age: number;
+  dateOfBirth?: string | null;
+  age?: number | null;
+  gender?: "MALE" | "FEMALE" | "OTHER" | null;
   phone: string;
-  gender?: string;
-  address?: string;
+  email?: string | null;
+  address?: string | null;
+  bloodGroup?: string | null;
+  allergies?: string | null;
+  emergencyContact?: string | null;
   createdAt?: string;
 };
 
-export type PatientInput = Pick<Patient, "name" | "age" | "phone">;
+export type PatientInput = Omit<Patient, "id" | "createdAt">;
 
 export type Doctor = {
   id: number;
   name: string;
   specialization: string;
+  licenseNumber: string;
   phone: string;
-  email?: string;
-  status?: "Available" | "Unavailable";
+  email: string;
+  createdAt?: string;
 };
 
-export type DoctorInput = Omit<Doctor, "id">;
+export type DoctorInput = Omit<Doctor, "id" | "createdAt">;
 
-export type AppointmentStatus =
-  | "Scheduled"
-  | "Completed"
-  | "Cancelled";
+export type AppointmentStatus = "SCHEDULED" | "COMPLETED" | "CANCELLED";
 
 export type Appointment = {
   id: number;
-  patientId?: number;
-  doctorId?: number;
-  patient: string;
-  doctor: string;
-  date: string;
-  time?: string;
+  patientId: number;
+  doctorId: number;
+  patientName: string;
+  doctorName: string;
+  specialization?: string;
+  appointmentDate: string;
   status: AppointmentStatus;
-  reason?: string;
+  reason?: string | null;
 };
 
 export type AppointmentInput = {
   patientId: number;
   doctorId: number;
-  date: string;
-  time: string;
-  reason?: string;
-  status?: AppointmentStatus;
+  appointmentDate: string;
+  reason?: string | null;
+};
+
+export type PrescriptionMedicine = {
+  id?: number;
+  medicineName: string;
+  dosage: string;
+  frequency: string;
+  duration: string;
+  instructions?: string | null;
+};
+
+export type Prescription = {
+  id: number;
+  appointmentId: number;
+  diagnosis: string;
+  notes?: string | null;
+  prescribedAt: string;
+  doctorId: number;
+  doctorName: string;
+  medicines: PrescriptionMedicine[];
+};
+
+export type LabReport = {
+  id: number;
+  testName: string;
+  notes?: string | null;
+  storageType: "LOCAL" | "S3";
+  originalFileName: string;
+  mimeType: string;
+  uploadedAt: string;
+  fileUrl: string;
+};
+
+export type PatientHistory = {
+  patient: Patient;
+  appointments: Appointment[];
+  prescriptions: Prescription[];
+  labReports: LabReport[];
 };
 
 export type DashboardSummary = {
   patients: number;
   doctors: number;
   appointments: number;
-  revenue: number;
+  completedAppointments: number;
   recentAppointments: Appointment[];
 };

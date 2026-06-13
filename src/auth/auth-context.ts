@@ -1,11 +1,10 @@
 import { createContext, useContext } from "react";
-import type { LoginInput, RegisterInput, User } from "../models";
+import type { LoginInput, User } from "../models";
 
 export type AuthContextValue = {
   user: User | null;
   isAuthenticated: boolean;
   login: (input: LoginInput) => Promise<void>;
-  register: (input: RegisterInput) => Promise<void>;
   logout: () => void;
 };
 
