@@ -8,12 +8,12 @@ export const getPatients = async () => {
   return response.data;
 };
 
-export const createPatient = async (data: {
+export const createPatient = async (patient: {
   name: string;
   age: number;
   phone: string;
 }) => {
-  const response = await axios.post(API_URL, data);
+  const response = await axios.post(API_URL, patient);
 
   return response.data;
 };
